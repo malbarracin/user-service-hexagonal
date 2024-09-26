@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.musicdiscovery.user.application.port.input.UserServicePort;
 import io.musicdiscovery.user.domain.exception.UserNotFoundException;
-import io.musicdiscovery.user.domain.model.User;
 import io.musicdiscovery.user.infrastructure.adapters.input.rest.mapper.UserRestMapper;
 import io.musicdiscovery.user.infrastructure.adapters.input.rest.model.request.UserCreateRequest;
 import io.musicdiscovery.user.infrastructure.adapters.input.rest.model.response.UserResponse;
@@ -157,7 +156,10 @@ public class UserController {
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public Mono<Void> deleteUser(@PathVariable String id) {
-    	return userServicePort.deleteUser(id);
+    	//return userServicePort.deleteUser(id);
+    	 return userServicePort.getUserById(id)
+    		        .switchIfEmpty(Mono.error(new UserNotFoundException("User not found with ID: " + id)))
+    		        .flatMap(user -> userServicePort.deleteUser(id));
     }
 
     @Operation(summary = "Get all users", description = "Retrieve all users from the system.")
