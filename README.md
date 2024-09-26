@@ -25,8 +25,8 @@ Esta separación permite que la lógica de negocio se mantenga independiente de 
 1. **Clonar el Repositorio**
 
    ```bash
-   git clone https://github.com/malbarracin/c.git
-   cd https://github.com/malbarracin/user-service-hexagonal.git
+   git clone https://github.com/malbarracin/user-service-hexagonal.git
+   cd user-service-hexagonal
 
 
 2. **Compilar el Proyecto**
