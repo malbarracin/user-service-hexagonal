@@ -1,0 +1,25 @@
+server:
+  port: ${USER_SERVICE_PORT:8081}
+
+
+spring:
+  webflux:
+    base-path: /user-service
+
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html    
+
+logging:
+  level:
+    root: info
+    reactor.netty.http.client: debug
+  
+mongo:
+    data-base-user-name: ${DATA_BASE_USER_NAME:root}
+    data-base-user-password: ${DATA_BASE_USER_PASSWORD:root}
+    data-base-host: ${DATA_BASE_HOST:localhost}
+    data-base-name: ${DATA_BASE_NAME:MusicDiscovery}
