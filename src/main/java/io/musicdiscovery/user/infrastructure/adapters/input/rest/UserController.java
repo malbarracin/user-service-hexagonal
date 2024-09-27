@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import io.musicdiscovery.user.application.port.input.UserServicePort;
 import io.musicdiscovery.user.domain.exception.UserNotFoundException;
 import io.musicdiscovery.user.infrastructure.adapters.input.rest.mapper.UserRestMapper;
+import io.musicdiscovery.user.infrastructure.adapters.input.rest.model.request.UpdateMoodRequest;
 import io.musicdiscovery.user.infrastructure.adapters.input.rest.model.request.UserCreateRequest;
 import io.musicdiscovery.user.infrastructure.adapters.input.rest.model.response.UserResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -188,5 +189,45 @@ public class UserController {
     public Mono<List<UserResponse>> getAllUsers() {
     	return userServicePort.getAllUsers()
                 .map(restMapper::toUserResponseList);
+    }
+    
+    @Operation(summary = "Update mood an existing user", description = "Update the mood of an existing user.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "User mood updated",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = UserResponse.class),
+                            examples = @ExampleObject(value = "{\r\n"
+                            		+ "    \"id\": \"66f6c16114bc0440df633f97\",\r\n"
+                            		+ "    \"name\": \"Marcelo Alejandro Albarracín\",\r\n"
+                            		+ "    \"email\": \"marceloalejandro.albarracin@gmail.com\",\r\n"
+                            		+ "    \"mood\": \"MOTIVATED\",\r\n"
+                            		+ "    \"preferredGenre\": [\r\n"
+                            		+ "        \"ROCK\",\r\n"
+                            		+ "        \"JAZZ\"\r\n"
+                            		+ "    ],\r\n"
+                            		+ "    \"favoriteArtist\": [\r\n"
+                            		+ "        \"The Beatles\",\r\n"
+                            		+ "        \"Miles Davis\"\r\n"
+                            		+ "    ]\r\n"
+                            		+ "}"))}),
+            @ApiResponse(responseCode = "404", description = "User not found",
+                    content = @Content(mediaType = "application/json",
+                            examples = @ExampleObject(value = "{\r\n"
+                            		+ "    \"message\": \"User not found with ID: 66f4bdf541bae35a29ecd68f2\",\r\n"
+                            		+ "    \"status\": 404\r\n"
+                            		+ "}"))),
+            @ApiResponse(responseCode = "400", description = "Invalid input",
+            content = @Content(mediaType = "application/json",
+                    examples = @ExampleObject(value = "{\r\n"
+                    		+ "    \"message\": \"Invalid request input: Failed to read HTTP message\",\r\n"
+                    		+ "    \"status\": 400\r\n"
+                    		+ "}")))
+            
+    })
+    @PutMapping("/{id}/mood")
+    public Mono<UserResponse> updateMood(@PathVariable String id, @RequestBody UpdateMoodRequest mood) {
+        return userServicePort.updateMood(id, mood.getMood())
+    	        .map(restMapper::toUserResponse);
+        
     }
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import io.musicdiscovery.user.domain.model.enums.Genre;
+import io.musicdiscovery.user.domain.model.enums.Mood;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,6 +25,7 @@ public class UserEntity {
 	private String id;
 	private String name;
 	private String email;
+	private Mood mood;
 	private List<Genre> preferredGenre;
     private List<String> favoriteArtist;
 }

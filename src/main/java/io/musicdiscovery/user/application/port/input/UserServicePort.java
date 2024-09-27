@@ -3,6 +3,7 @@ package io.musicdiscovery.user.application.port.input;
 import java.util.List;
 
 import io.musicdiscovery.user.domain.model.User;
+import io.musicdiscovery.user.domain.model.enums.Mood;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -52,4 +53,13 @@ public interface UserServicePort {
      * @return a {@link Mono} signaling completion when the user is deleted
      */
     Mono<Void> deleteUser(String id);
+    
+    /**
+     * Updates the mood of a user's profile.
+     *
+     * @param id   The ID of the user profile whose mood is being updated.
+     * @param mood The new mood to set for the user's profile.
+     * @return A {@link Mono} containing the updated {@link UserProfile}, or empty if the profile does not exist.
+     */
+    Mono<User> updateMood(String id, Mood mood);
 }

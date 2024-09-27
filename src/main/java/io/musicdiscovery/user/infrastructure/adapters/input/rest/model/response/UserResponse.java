@@ -3,6 +3,7 @@ package io.musicdiscovery.user.infrastructure.adapters.input.rest.model.response
 import java.util.List;
 
 import io.musicdiscovery.user.domain.model.enums.Genre;
+import io.musicdiscovery.user.domain.model.enums.Mood;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -26,6 +27,9 @@ public class UserResponse {
     @Schema(description = "Email address of the user")
     private String email;
 
+    @ArraySchema(schema = @Schema(implementation = Genre.class, description = "User mood"))
+    private Mood mood;
+    
     @ArraySchema(schema = @Schema(implementation = Genre.class, description = "List of preferred music genres chosen by the user"))
     private List<Genre> preferredGenre;
 

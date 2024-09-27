@@ -9,6 +9,7 @@ import io.musicdiscovery.user.application.port.input.UserServicePort;
 import io.musicdiscovery.user.application.port.output.UserPersistencePort;
 import io.musicdiscovery.user.domain.exception.UserNotFoundException;
 import io.musicdiscovery.user.domain.model.User;
+import io.musicdiscovery.user.domain.model.enums.Mood;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import lombok.RequiredArgsConstructor;
@@ -66,6 +67,22 @@ public class UserService implements UserServicePort {
 			return userRepository.save(existingUser);
 		}).switchIfEmpty(Mono.error(new UserNotFoundException("User not found with ID: " + id)));
 	}
+	
+	/**
+	 * Updates the mood of a user's profile.
+	 *
+	 * @param id   The ID of the user profile whose mood is being updated.
+	 * @param mood The new mood to set for the user's profile.
+	 * @return A {@link Mono} containing the updated {@link UserProfile}, or empty if the profile does not exist.
+	 */
+	@Override
+	public Mono<User> updateMood(String id, Mood mood) {
+        return userRepository.findById(id)
+            .flatMap(profile -> {
+                profile.setMood(mood);
+                return userRepository.save(profile);
+            }).switchIfEmpty(Mono.error(new UserNotFoundException("User not found with ID: " + id)));
+    }
 
 	/**
 	 * Retrieves all users.

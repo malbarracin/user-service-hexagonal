@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -18,6 +19,7 @@ import org.mockito.MockitoAnnotations;
 import io.musicdiscovery.user.application.port.output.UserPersistencePort;
 import io.musicdiscovery.user.domain.exception.UserNotFoundException;
 import io.musicdiscovery.user.domain.model.User;
+import io.musicdiscovery.user.domain.model.enums.Mood;
 import reactor.core.publisher.Mono;
 
 public class UserServiceTest {
@@ -33,7 +35,12 @@ public class UserServiceTest {
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
-        testUser = new User("1", "John Doe", "john@example.com", List.of(), List.of());
+        testUser = new User();
+        testUser.setId("1");
+        testUser.setName("John Doe");
+        testUser.setEmail("john@example.com");
+        testUser.setFavoriteArtist(List.of());
+        testUser.setPreferredGenre(List.of());
     }
 
     /**
@@ -85,7 +92,13 @@ public class UserServiceTest {
     @Test
     public void testUpdateUser_UserExists() {
         when(userRepository.findById("1")).thenReturn(Mono.just(testUser));
-        User updatedUser = new User("1", "Jane Doe", "jane@example.com", List.of(), List.of());
+        User updatedUser = new User();
+ 
+        updatedUser.setId("1");
+        updatedUser.setName("Jane Doe");
+        updatedUser.setEmail("jan@example.com");
+        updatedUser.setFavoriteArtist(List.of());
+        updatedUser.setPreferredGenre(List.of());
 
         when(userRepository.save(testUser)).thenReturn(Mono.just(updatedUser));
 
@@ -142,6 +155,47 @@ public class UserServiceTest {
         verify(userRepository).findById("1");
         verify(userRepository).deleteById("1");
     }
+    
+    
+    
+    /**
+     * Tests the update mood User method for updating an existing user.
+     */
+    @Test
+    public void testUpdateMoodUser_UserExists() {
+        when(userRepository.findById("1")).thenReturn(Mono.just(testUser));
+        User updatedUser = new User();
+ 
+        updatedUser.setId("1");
+        updatedUser.setName("Jane Doe");
+        updatedUser.setEmail("jan@example.com");
+        updatedUser.setMood(Mood.EXERCISE);
+        updatedUser.setFavoriteArtist(List.of());
+        updatedUser.setPreferredGenre(List.of());
 
+        when(userRepository.save(testUser)).thenReturn(Mono.just(updatedUser));
+
+        Mono<User> result = userService.updateMood("1", Mood.EXERCISE);
+
+        assertNotNull(result);
+        assertEquals("Jane Doe", result.block().getName());
+        assertEquals(Mood.EXERCISE, result.block().getMood());
+    }
+    
+    
+    /**
+     * Tests the update Mood User method for a non-existing user ID.
+     */
+    @Test
+    public void testUpdateMoodUser_UserDoesNotExist() {
+        when(userRepository.findById("999")).thenReturn(Mono.empty());
+
+        Exception exception = assertThrows(UserNotFoundException.class, () -> {
+            userService.updateUser("999", testUser).block();
+        });
+
+        assertEquals("User not found with ID: 999", exception.getMessage());
+        verify(userRepository).findById("999");
+    }
 
 }

@@ -208,5 +208,43 @@ Esta separación permite que la lógica de negocio se mantenga independiente de 
    ```json
    204 No Content
 
+### 7. Utilizando **Postman Update mood an existing user**
+
+1. Abre **Postman** y crea una nueva **request** con los siguientes detalles:
+
+   - **Method**: `PUT`
+   - **URL**: `http://localhost:8081/user-service/users/{id}/mood`
+
+2. En la sección de **Headers**, agrega lo siguiente:
+
+   - `Content-Type`: `application/json`
+
+3. En el **Body**, selecciona la opción **raw** y usa **JSON** para enviar la siguiente carga de ejemplo:
+
+   ```json
+   {
+    "mood": "MOTIVATED"
+    }
+
+4. Haz clic en **Send** para enviar la solicitud.
+
+5. Ejemplo de respuesta esperada:
+
+   ```json
+   {
+        "id": "66f6c16114bc0440df633f97",
+        "name": "Marcelo Alejandro Albarracín",
+        "email": "malbarracin@gmail.com",
+        "mood": "MOTIVATED",
+        "preferredGenre": [
+            "ROCK",
+            "JAZZ"
+        ],
+        "favoriteArtist": [
+            "The Beatles",
+            "Miles Davis"
+        ]
+    }
+    
 ## ¿Te gusta el contenido que comparto? Invítame un café para ayudarme a seguir creando. ¡Gracias por tu apoyo!
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-F7DF1E?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black)](https://buymeacoffee.com/malbarracin)    
