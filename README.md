@@ -16,9 +16,13 @@ Esta separación permite que la lógica de negocio se mantenga independiente de 
 
 ## Requisitos
 
-- Java 17 o superior
-- Maven 3.6.0 o superior
-- Docker (opcional, si se desea usar contenedores para la base de datos)
+| Tecnología         |
+|--------------------|
+| ![Java](https://img.shields.io/badge/Java-21-007396?logo=java&logoColor=white)               |
+| ![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.3.3-6DB33F?logo=spring-boot&logoColor=white)        |
+| ![Spring WebFlux](https://img.shields.io/badge/Spring%20WebFlux-3.3.3-6DB33F?logo=spring&logoColor=white)    |
+| ![Maven](https://img.shields.io/badge/Maven-3.6.3-C71A36?logo=apache-maven&logoColor=white)              |
+| ![Docker](https://img.shields.io/badge/Docker-20.10.7-2496ED?logo=docker&logoColor=white)   
 
 ## Levantar el Proyecto
 
